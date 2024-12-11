@@ -81,8 +81,6 @@ def draw_planets_in_play(game_screen, planet_names_string, planets_in_play_strin
 def draw_hands(game_screen, hand_p_one, hand_p_two):
     card_names_one = hand_p_one.split(sep="/")
     card_names_two = hand_p_two.split(sep="/")
-    print(card_names_one)
-    print(card_names_two)
     x_c = 300
     y_c = 595
     increment = 80
@@ -105,7 +103,40 @@ def draw_hands(game_screen, hand_p_one, hand_p_two):
         game_screen.blit(card_image, (x_c, y_c))
         x_c += increment
 
-
+def draw_headquarters(game_screen, hq_p_one, hq_p_two):
+    hq_bundles_1 = hq_p_one.split(sep="/")
+    hq_bundles_2 = hq_p_two.split(sep="/")
+    x_c = 300
+    y_c = 500
+    increment = 80
+    for i in range(len(hq_bundles_1)):
+        card_image_name = ""
+        pos = 0
+        while hq_bundles_1[i][pos] != "(":
+            card_image_name = card_image_name + hq_bundles_1[i][pos]
+            pos += 1
+        card_image_name = "ResizedImages/" + card_image_name + ".jpg"
+        for letter in card_image_name:
+            if letter == " ":
+                card_image_name = card_image_name.replace(letter, "_")
+        card_image = pygame.image.load(card_image_name).convert()
+        game_screen.blit(card_image, (x_c, y_c))
+        x_c += increment
+    x_c = 300
+    y_c = 125
+    for i in range(len(hq_bundles_2)):
+        card_image_name = ""
+        pos = 0
+        while hq_bundles_2[i][pos] != "(":
+            card_image_name = card_image_name + hq_bundles_2[i][pos]
+            pos += 1
+        card_image_name = "ResizedImages/" + card_image_name + ".jpg"
+        for letter in card_image_name:
+            if letter == " ":
+                card_image_name = card_image_name.replace(letter, "_")
+        card_image = pygame.image.load(card_image_name).convert()
+        game_screen.blit(card_image, (x_c, y_c))
+        x_c += increment
 
 def draw_all(game_screen, string_from_server):
     imperial_image = pygame.image.load("ImperialAquila.jpg").convert()
@@ -119,6 +150,7 @@ def draw_all(game_screen, string_from_server):
         draw_resources_both(game_screen, split_string[1], split_string[2])
         draw_planets_in_play(game_screen, split_string[3], split_string[4])
         draw_hands(game_screen, split_string[5], split_string[6])
+        draw_headquarters(game_screen, split_string[7], split_string[8])
     pygame.display.flip()
 
 def draw_current_deck(game_screen,  current_deck):

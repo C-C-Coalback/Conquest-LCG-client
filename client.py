@@ -30,7 +30,7 @@ def send():
         while running:
             _ = pygame.time.wait(1000)
             c.acquire()
-            print(string_from_server)
+            # print(string_from_server)
             c.notify_all()
             draw_all(window, string_from_server) #The draw all function should go here
             c.release()
