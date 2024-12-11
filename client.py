@@ -2,6 +2,7 @@ import socket, sys
 import Replace
 from threading import *
 import pygame
+from Drawing import draw_all
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect(('localhost', 8089))
@@ -24,7 +25,7 @@ def send():
     try:
         while running:
             _ = pygame.time.wait(17)
-            pygame.display.flip() #The draw all function should go here
+            draw_all(window) #The draw all function should go here
             for x in pygame.event.get():
                 if x.type == pygame.QUIT:
                     pygame.quit()
