@@ -62,6 +62,24 @@ def draw_resources_both(game_screen, amount1, amount2):
     txt_surface_two = font.render(amount2, True, color)
     game_screen.blit(txt_surface_two, (144, 65))
 
+def draw_planets_in_play(game_screen, planet_names_string, planets_in_play_string):
+    x_c = 60
+    y_c = 320
+    planets = planet_names_string.split(sep="/")
+    planets_in_play = planets_in_play_string.split(sep="/")
+    print(planets)
+    for i in range(len(planets)):
+        if planets_in_play[i] == "True":
+            planet_name = planets[i]
+            for letter in planet_name:
+                if letter == " ":
+                    planet_name= planet_name.replace(letter, "_")
+            planet_image_name = "ResizedImages/" + planet_name + ".jpg"
+            planet_image = pygame.image.load(planet_image_name).convert()
+            game_screen.blit(planet_image, (x_c, y_c))
+        x_c += 165
+
+
 def draw_all(game_screen, string_from_server):
     imperial_image = pygame.image.load("ImperialAquila.jpg").convert()
     game_screen.blit(imperial_image, (0, 0))
@@ -72,6 +90,7 @@ def draw_all(game_screen, string_from_server):
     split_string = string_from_server.split(sep="#")
     if len(split_string) > 2:
         draw_resources_both(game_screen, split_string[1], split_string[2])
+        draw_planets_in_play(game_screen, split_string[3], split_string[4])
     pygame.display.flip()
 
 def draw_current_deck(game_screen,  current_deck):
