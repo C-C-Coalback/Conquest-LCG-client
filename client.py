@@ -1,4 +1,5 @@
 import socket
+import Replace
 from threading import *
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -26,6 +27,10 @@ def recv():
     except ConnectionAbortedError:
         print("Connection aborted")
 
-
-Thread(target=recv).start()
-Thread(target=send).start()
+user_input = input("g to connect to server, r to resize files")
+if user_input == "g":
+    Thread(target=recv).start()
+    Thread(target=send).start()
+elif user_input == "r":
+    client_socket.close()
+    Replace.resize_files()
