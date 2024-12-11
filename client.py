@@ -23,6 +23,8 @@ def send():
     pygame.display.flip()
     try:
         while running:
+            _ = pygame.time.wait(17)
+            pygame.display.flip()
             for x in pygame.event.get():
                 if x.type == pygame.QUIT:
                     pygame.quit()
@@ -50,8 +52,8 @@ def recv():
 
 user_input = input("g to connect to server, r to resize files")
 if user_input == "g":
-    Thread(target=recv).start()
     Thread(target=send).start()
+    Thread(target=recv).start()
 elif user_input == "r":
     client_socket.close()
     Replace.resize_files()
