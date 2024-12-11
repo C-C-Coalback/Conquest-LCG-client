@@ -24,7 +24,7 @@ def send():
     try:
         while running:
             _ = pygame.time.wait(17)
-            pygame.display.flip()
+            pygame.display.flip() #The draw all function should go here
             for x in pygame.event.get():
                 if x.type == pygame.QUIT:
                     pygame.quit()
@@ -43,7 +43,7 @@ def recv():
     running = True
     try:
         while running:
-            message = client_socket.recv(1024).decode()
+            message = client_socket.recv(200000).decode()
             if not message:
                 break
             print("Server sent:", message)
