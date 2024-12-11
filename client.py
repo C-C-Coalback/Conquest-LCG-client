@@ -6,8 +6,12 @@ from Drawing import draw_all
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect(('localhost', 8089))
+c = Condition()
+
+string_from_server = ""
 
 def send():
+    global string_from_server
     running = True
     pygame.init()
     bounds = (1200, 700)
@@ -24,7 +28,11 @@ def send():
     pygame.display.flip()
     try:
         while running:
-            _ = pygame.time.wait(17)
+            _ = pygame.time.wait(1000)
+            c.acquire()
+            print(string_from_server)
+            c.notify_all()
+            c.release()
             draw_all(window) #The draw all function should go here
             for x in pygame.event.get():
                 if x.type == pygame.QUIT:
@@ -41,12 +49,17 @@ def send():
         print("Connection aborted")
 
 def recv():
+    global string_from_server
     running = True
     try:
         while running:
             message = client_socket.recv(200000).decode()
             if not message:
                 break
+            c.acquire()
+            string_from_server = message
+            c.notify_all()
+            c.release()
             print("Server sent:", message)
     except ConnectionAbortedError:
         print("Connection aborted")
