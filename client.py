@@ -1,18 +1,39 @@
-import socket
+import socket, sys
 import Replace
 from threading import *
+import pygame
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect(('localhost', 8089))
 
 def send():
     running = True
+    pygame.init()
+    bounds = (1200, 700)
+    window = pygame.display.set_mode(bounds)
+    pygame.display.set_caption("Conquest")
+    imperial_image = pygame.image.load("ImperialAquila.jpg").convert()
+    window.blit(imperial_image, (0, 0))
+    font = pygame.font.Font(None, 32)
+    color = pygame.Color("green")
+    txt_surface = font.render("Press p to play", True, color)
+    window.blit(txt_surface, (500, 300))
+    txt_surface2 = font.render("Press d to build a deck", True, color)
+    window.blit(txt_surface2, (500, 325))
+    pygame.display.flip()
     try:
         while running:
-            message = input("Message")
-            client_socket.send(bytes(message, 'UTF-8'))
-            if message == "QUIT":
-                running = False
+            for x in pygame.event.get():
+                if x.type == pygame.QUIT:
+                    pygame.quit()
+                    client_socket.close()
+                    sys.exit()
+                if x.type == pygame.MOUSEBUTTONDOWN:
+                    x, y = pygame.mouse.get_pos()
+                    print(x, y)
+                    message = str(x) + '#' + str(y)
+                    client_socket.send(bytes(message, "UTF-8"))
+
     except ConnectionAbortedError:
         print("Connection aborted")
 
