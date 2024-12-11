@@ -67,7 +67,6 @@ def draw_planets_in_play(game_screen, planet_names_string, planets_in_play_strin
     y_c = 320
     planets = planet_names_string.split(sep="/")
     planets_in_play = planets_in_play_string.split(sep="/")
-    print(planets)
     for i in range(len(planets)):
         if planets_in_play[i] == "True":
             planet_name = planets[i]
@@ -78,6 +77,34 @@ def draw_planets_in_play(game_screen, planet_names_string, planets_in_play_strin
             planet_image = pygame.image.load(planet_image_name).convert()
             game_screen.blit(planet_image, (x_c, y_c))
         x_c += 165
+
+def draw_hands(game_screen, hand_p_one, hand_p_two):
+    card_names_one = hand_p_one.split(sep="/")
+    card_names_two = hand_p_two.split(sep="/")
+    print(card_names_one)
+    print(card_names_two)
+    x_c = 300
+    y_c = 595
+    increment = 80
+    for i in range(len(card_names_one)):
+        card_image_name = "ResizedImages/" + card_names_one[i] + ".jpg"
+        for letter in card_image_name:
+            if letter == " ":
+                card_image_name = card_image_name.replace(letter, "_")
+        card_image = pygame.image.load(card_image_name).convert()
+        game_screen.blit(card_image, (x_c, y_c))
+        x_c += increment
+    x_c = 200
+    y_c = 25
+    for i in range(len(card_names_two)):
+        card_image_name = "ResizedImages/" + card_names_two[i] + ".jpg"
+        for letter in card_image_name:
+            if letter == " ":
+                card_image_name = card_image_name.replace(letter, "_")
+        card_image = pygame.image.load(card_image_name).convert()
+        game_screen.blit(card_image, (x_c, y_c))
+        x_c += increment
+
 
 
 def draw_all(game_screen, string_from_server):
@@ -91,6 +118,7 @@ def draw_all(game_screen, string_from_server):
     if len(split_string) > 2:
         draw_resources_both(game_screen, split_string[1], split_string[2])
         draw_planets_in_play(game_screen, split_string[3], split_string[4])
+        draw_hands(game_screen, split_string[5], split_string[6])
     pygame.display.flip()
 
 def draw_current_deck(game_screen,  current_deck):
