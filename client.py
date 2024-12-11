@@ -32,8 +32,8 @@ def send():
             c.acquire()
             print(string_from_server)
             c.notify_all()
+            draw_all(window, string_from_server) #The draw all function should go here
             c.release()
-            draw_all(window) #The draw all function should go here
             for x in pygame.event.get():
                 if x.type == pygame.QUIT:
                     pygame.quit()

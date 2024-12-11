@@ -54,13 +54,24 @@ def draw_resource_icon_both(game_screen):
     game_screen.blit(icon, (1000, 600))
     game_screen.blit(icon, (125, 50))
 
-def draw_all(game_screen):
+def draw_resources_both(game_screen, amount1, amount2):
+    font = pygame.font.Font(None, 32)
+    color = pygame.Color("green")
+    txt_surface_one = font.render(amount1, True, color)
+    game_screen.blit(txt_surface_one, (1019, 615))
+    txt_surface_two = font.render(amount2, True, color)
+    game_screen.blit(txt_surface_two, (144, 65))
+
+def draw_all(game_screen, string_from_server):
     imperial_image = pygame.image.load("ImperialAquila.jpg").convert()
     game_screen.blit(imperial_image, (0, 0))
     draw_mat(game_screen)
     draw_both_pass_button(game_screen)
     draw_both_action_button(game_screen)
     draw_resource_icon_both(game_screen)
+    split_string = string_from_server.split(sep="#")
+    if len(split_string) > 2:
+        draw_resources_both(game_screen, split_string[1], split_string[2])
     pygame.display.flip()
 
 def draw_current_deck(game_screen,  current_deck):
