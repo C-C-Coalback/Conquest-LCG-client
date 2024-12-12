@@ -106,36 +106,68 @@ def draw_hands(game_screen, hand_p_one, hand_p_two):
 def draw_headquarters(game_screen, hq_p_one, hq_p_two):
     hq_bundles_1 = hq_p_one.split(sep="/")
     hq_bundles_2 = hq_p_two.split(sep="/")
+    print(hq_bundles_1, hq_bundles_2)
     x_c = 300
     y_c = 500
     increment = 80
     for i in range(len(hq_bundles_1)):
-        card_image_name = ""
+        card_name = ""
         pos = 0
         while hq_bundles_1[i][pos] != "(":
-            card_image_name = card_image_name + hq_bundles_1[i][pos]
+            card_name = card_name + hq_bundles_1[i][pos]
             pos += 1
-        card_image_name = "ResizedImages/" + card_image_name + ".jpg"
+        card_image_name = "ResizedImages/" + card_name + ".jpg"
+        pos += 1
+        if hq_bundles_1[i][pos] == "B":
+            card_image_name = "ResizedImages/" + card_name + "_bloodied.jpg"
         for letter in card_image_name:
             if letter == " ":
                 card_image_name = card_image_name.replace(letter, "_")
+        pos += 2
         card_image = pygame.image.load(card_image_name).convert()
+        if hq_bundles_1[i][pos] == "E":
+            card_image = pygame.transform.rotate(card_image, 270)
+        pos += 2
         game_screen.blit(card_image, (x_c, y_c))
+        damage = ""
+        while hq_bundles_1[i][pos] != ")":
+            damage += hq_bundles_1[i][pos]
+            pos += 1
+        if 0 < int(damage) < 10:
+            damage_name = 'damagetokens/' + damage + '_Damage.png'
+            damage_image = pygame.image.load(damage_name).convert()
+            game_screen.blit(damage_image, (x_c + 10, y_c + 30))
+        pos += 1
         x_c += increment
     x_c = 300
     y_c = 125
     for i in range(len(hq_bundles_2)):
-        card_image_name = ""
+        card_name = ""
         pos = 0
         while hq_bundles_2[i][pos] != "(":
-            card_image_name = card_image_name + hq_bundles_2[i][pos]
+            card_name = card_name + hq_bundles_2[i][pos]
             pos += 1
-        card_image_name = "ResizedImages/" + card_image_name + ".jpg"
+        card_image_name = "ResizedImages/" + card_name + ".jpg"
+        pos += 1
+        if hq_bundles_2[i][pos] == "B":
+            card_image_name = "ResizedImages/" + card_name + "_bloodied.jpg"
         for letter in card_image_name:
             if letter == " ":
                 card_image_name = card_image_name.replace(letter, "_")
+        pos += 2
         card_image = pygame.image.load(card_image_name).convert()
+        if hq_bundles_2[i][pos] == "E":
+            card_image = pygame.transform.rotate(card_image, 270)
+        pos += 2
         game_screen.blit(card_image, (x_c, y_c))
+        damage = ""
+        while hq_bundles_2[i][pos] != ")":
+            damage += hq_bundles_2[i][pos]
+            pos += 1
+        if 0 < int(damage) < 10:
+            damage_name = 'damagetokens/' + damage + '_Damage.png'
+            damage_image = pygame.image.load(damage_name).convert()
+            game_screen.blit(damage_image, (x_c + 10, y_c + 30))
         x_c += increment
 
 def draw_all(game_screen, string_from_server):
