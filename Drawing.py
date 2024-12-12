@@ -106,7 +106,6 @@ def draw_hands(game_screen, hand_p_one, hand_p_two):
 def draw_headquarters(game_screen, hq_p_one, hq_p_two):
     hq_bundles_1 = hq_p_one.split(sep="/")
     hq_bundles_2 = hq_p_two.split(sep="/")
-    print(hq_bundles_1, hq_bundles_2)
     x_c = 300
     y_c = 500
     increment = 80
@@ -170,6 +169,50 @@ def draw_headquarters(game_screen, hq_p_one, hq_p_two):
             game_screen.blit(damage_image, (x_c + 10, y_c + 30))
         x_c += increment
 
+def draw_in_play_p_one(game_screen, in_play_p_one):
+    x_first_planet = 60
+    y_first_planet = 385
+    x_increment = 62
+    y_increment = 88
+    for i in range(len(in_play_p_one)):
+        x_current_planet = x_first_planet + (i * 165)
+        y_current_planet = y_first_planet
+        if in_play_p_one[i] != "NONE":
+            bundles = in_play_p_one[i].split(sep="/")
+            for j in range(len(bundles)):
+                card_name = ""
+                pos = 0
+                while bundles[j][pos] != "(":
+                    card_name = card_name + bundles[j][pos]
+                    pos += 1
+                card_image_name = "ResizedImages/" + card_name + ".jpg"
+                pos += 1
+                if bundles[j][pos] == "B":
+                    card_image_name = "ResizedImages/" + card_name + "_bloodied.jpg"
+                for letter in card_image_name:
+                    if letter == " ":
+                        card_image_name = card_image_name.replace(letter, "_")
+                pos += 2
+                card_image = pygame.image.load(card_image_name).convert()
+                if bundles[j][pos] == "E":
+                    card_image = pygame.transform.rotate(card_image, 270)
+                pos += 2
+                game_screen.blit(card_image, (x_current_planet, y_current_planet))
+                damage = ""
+                while bundles[j][pos] != ")":
+                    damage += bundles[j][pos]
+                    pos += 1
+                if 0 < int(damage) < 10:
+                    damage_name = 'damagetokens/' + damage + '_Damage.png'
+                    damage_image = pygame.image.load(damage_name).convert()
+                    game_screen.blit(damage_image, (x_current_planet + 10, y_current_planet + 30))
+                pos += 1
+                x_current_planet += x_increment
+                if x_current_planet > x_first_planet + 165 * i + x_increment:
+                    x_current_planet = x_first_planet + 165 * i
+                    y_current_planet = y_current_planet + y_increment
+
+
 def draw_all(game_screen, string_from_server):
     imperial_image = pygame.image.load("ImperialAquila.jpg").convert()
     game_screen.blit(imperial_image, (0, 0))
@@ -183,6 +226,7 @@ def draw_all(game_screen, string_from_server):
         draw_planets_in_play(game_screen, split_string[3], split_string[4])
         draw_hands(game_screen, split_string[5], split_string[6])
         draw_headquarters(game_screen, split_string[7], split_string[8])
+        draw_in_play_p_one(game_screen, split_string[9:16])
     pygame.display.flip()
 
 def draw_current_deck(game_screen,  current_deck):
