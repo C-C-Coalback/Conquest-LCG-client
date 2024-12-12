@@ -169,16 +169,19 @@ def draw_headquarters(game_screen, hq_p_one, hq_p_two):
             game_screen.blit(damage_image, (x_c + 10, y_c + 30))
         x_c += increment
 
-def draw_in_play_p_one(game_screen, in_play_p_one):
+def draw_in_play(game_screen, in_play, number=1):
     x_first_planet = 60
     y_first_planet = 385
     x_increment = 62
     y_increment = 88
-    for i in range(len(in_play_p_one)):
+    if number == 2:
+        y_first_planet = 230
+        y_increment = -88
+    for i in range(len(in_play)):
         x_current_planet = x_first_planet + (i * 165)
         y_current_planet = y_first_planet
-        if in_play_p_one[i] != "NONE":
-            bundles = in_play_p_one[i].split(sep="/")
+        if in_play[i] != "NONE":
+            bundles = in_play[i].split(sep="/")
             for j in range(len(bundles)):
                 card_name = ""
                 pos = 0
@@ -212,7 +215,6 @@ def draw_in_play_p_one(game_screen, in_play_p_one):
                     x_current_planet = x_first_planet + 165 * i
                     y_current_planet = y_current_planet + y_increment
 
-
 def draw_all(game_screen, string_from_server):
     imperial_image = pygame.image.load("ImperialAquila.jpg").convert()
     game_screen.blit(imperial_image, (0, 0))
@@ -226,7 +228,8 @@ def draw_all(game_screen, string_from_server):
         draw_planets_in_play(game_screen, split_string[3], split_string[4])
         draw_hands(game_screen, split_string[5], split_string[6])
         draw_headquarters(game_screen, split_string[7], split_string[8])
-        draw_in_play_p_one(game_screen, split_string[9:16])
+        draw_in_play(game_screen, split_string[9:16], 1)
+        draw_in_play(game_screen, split_string[16:23], 2)
     pygame.display.flip()
 
 def draw_current_deck(game_screen,  current_deck):
