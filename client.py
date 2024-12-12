@@ -50,7 +50,7 @@ def send():
                 if x.type == pygame.KEYDOWN:
                     if x.key == pygame.K_p and phase == "Lobby":
                         client_socket.send(bytes("BEGIN GAME", "UTF-8"))
-                        message = find_deck(window)
+                        message = "LOAD DECK#" + find_deck(window)
                         client_socket.send(bytes(message, "UTF-8"))
                         phase = "Game"
 
