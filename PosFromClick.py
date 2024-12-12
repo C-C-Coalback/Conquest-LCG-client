@@ -36,7 +36,7 @@ def pos_from_click(x, y):
         else:
             message = "P2#HQ#" + str(position)
             return message
-    if 594 < y < 686:
+    if 594 < y < 686: #HAND PLAYER ONE
         position = x
         position = position - 300
         remainder = position % 80
@@ -47,7 +47,7 @@ def pos_from_click(x, y):
         else:
             message = "P1#Hand#" + str(position)
             return message
-    if 24 < y < 116:
+    if 24 < y < 116: #HAND PLAYER TWO
         position = x
         position = position - 200
         remainder = position % 80
@@ -57,5 +57,33 @@ def pos_from_click(x, y):
         else:
             message = "P2#Hand#" + str(position)
             return message
-
+    if y > 385: #IN PLAY PLAYER ONE
+        x_pos = x % 165
+        if 60 < x_pos < 185:
+            position = y
+            position = position - 385
+            position = int(position / 88)
+            position = 2 * position
+            if x_pos > 122:
+                position = position + 1
+            planet_pos = x - 60
+            planet_pos = int(planet_pos / 165)
+            message = "P1#PLAY#" + str(planet_pos) + "#" + str(position)
+            return message
+        return ""
+    if y < 320: #IN PLAY PLAYER ONE
+        x_pos = x % 165
+        if 60 < x_pos < 185:
+            position = y
+            position = position - 320
+            position = -1 * position
+            position = int(position / 88)
+            position = 2 * position
+            if x_pos > 122:
+                position = position + 1
+            planet_pos = x - 60
+            planet_pos = int(planet_pos / 165)
+            message = "P2#PLAY#" + str(planet_pos) + "#" + str(position)
+            return message
+        return ""
     return message
