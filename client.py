@@ -31,7 +31,7 @@ def send():
     phase = "Lobby"
     try:
         while running:
-            if phase == "game":
+            if phase == "Game":
                 _ = pygame.time.wait(20)
                 c.acquire()
                 c.notify_all()
@@ -49,10 +49,10 @@ def send():
                     client_socket.send(bytes(message, "UTF-8"))
                 if x.type == pygame.KEYDOWN:
                     if x.key == pygame.K_p and phase == "Lobby":
-                        phase = "Deck Select"
                         print("Changed phase to Deck Select")
                         message = find_deck(window)
                         client_socket.send(bytes(message, "UTF-8"))
+                        phase = "Game"
 
 
     except ConnectionAbortedError:
