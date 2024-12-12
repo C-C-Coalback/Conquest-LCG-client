@@ -4,6 +4,7 @@ from threading import *
 import pygame
 from Drawing import draw_all
 from PosFromClick import pos_from_click
+from FindDeck import find_deck
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect(('localhost', 8089))
@@ -27,23 +28,32 @@ def send():
     txt_surface2 = font.render("Press d to build a deck", True, color)
     window.blit(txt_surface2, (500, 325))
     pygame.display.flip()
+    phase = "Lobby"
     try:
         while running:
-            _ = pygame.time.wait(20)
-            c.acquire()
-            c.notify_all()
-            draw_all(window, string_from_server)
-            c.release()
+            if phase == "game":
+                _ = pygame.time.wait(20)
+                c.acquire()
+                c.notify_all()
+                draw_all(window, string_from_server)
+                c.release()
             for x in pygame.event.get():
                 if x.type == pygame.QUIT:
                     pygame.quit()
                     client_socket.close()
                     sys.exit()
                 if x.type == pygame.MOUSEBUTTONDOWN:
-                    x, y = pygame.mouse.get_pos()
-                    print(x, y)
-                    message = pos_from_click(x, y)
+                    x_pos, y_pos = pygame.mouse.get_pos()
+                    print(x_pos, y_pos)
+                    message = pos_from_click(x_pos, y_pos)
                     client_socket.send(bytes(message, "UTF-8"))
+                if x.type == pygame.KEYDOWN:
+                    if x.key == pygame.K_p and phase == "Lobby":
+                        phase = "Deck Select"
+                        print("Changed phase to Deck Select")
+                        message = find_deck(window)
+                        client_socket.send(bytes(message, "UTF-8"))
+
 
     except ConnectionAbortedError:
         print("Connection aborted")
