@@ -3,6 +3,7 @@ import Replace
 from threading import *
 import pygame
 from Drawing import draw_all
+from PosFromClick import pos_from_click
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect(('localhost', 8089))
@@ -28,7 +29,7 @@ def send():
     pygame.display.flip()
     try:
         while running:
-            _ = pygame.time.wait(1000)
+            _ = pygame.time.wait(20)
             c.acquire()
             c.notify_all()
             draw_all(window, string_from_server)
@@ -41,7 +42,7 @@ def send():
                 if x.type == pygame.MOUSEBUTTONDOWN:
                     x, y = pygame.mouse.get_pos()
                     print(x, y)
-                    message = str(x) + '#' + str(y)
+                    message = pos_from_click(x, y)
                     client_socket.send(bytes(message, "UTF-8"))
 
     except ConnectionAbortedError:
