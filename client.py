@@ -32,6 +32,7 @@ def send():
     window.blit(txt_surface2, (500, 325))
     pygame.display.flip()
     phase = "Main Menu"
+    current_lobby = []
     try:
         while running:
             if phase == "Lobby":
@@ -41,7 +42,7 @@ def send():
                 holder_string = string_from_server
                 holder_string = holder_string.split(sep="#")
                 c.release()
-                draw_lobby(window, holder_string)
+                current_lobby = draw_lobby(window, holder_string)
             if phase == "Game":
                 _ = pygame.time.wait(20)
                 c.acquire()
@@ -56,8 +57,9 @@ def send():
                 if x.type == pygame.MOUSEBUTTONDOWN:
                     x_pos, y_pos = pygame.mouse.get_pos()
                     print(x_pos, y_pos)
-                    message = pos_from_click(x_pos, y_pos, phase)
-                    client_socket.send(bytes(message, "UTF-8"))
+                    message = pos_from_click(x_pos, y_pos, phase, current_lobby)
+                    if message != "":
+                        client_socket.send(bytes(message, "UTF-8"))
                 if x.type == pygame.KEYDOWN:
                     if x.key == pygame.K_p and phase == "Main Menu":
                         name = PromptText.prompt_text(window, "Enter your display name")

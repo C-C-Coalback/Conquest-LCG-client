@@ -3,17 +3,35 @@ from ActionChecker import check_for_action
 from RefreshChecker import check_for_refresh
 
 
-def pos_from_click(x, y, mode = None):
+def determine_choice_pos_in_lobby(coord1, coord2):
+    x = coord1
+    y = coord2
+    if 300 < x < 440:
+        y = y - 100
+        remainder = y % 50
+        if remainder < 33:
+            y = int(y / 50)
+            return y
+    return -1
+
+
+def pos_from_click(x, y, mode, current_lobby=None):
     message = ""
-    if mode is not None:
-        if mode == "Lobby" and check_for_refresh(x, y):
+    if mode == "Lobby":
+        if check_for_refresh(x, y):
             return "REQUEST LOBBY"
+        pos = determine_choice_pos_in_lobby(x, y)
+        if current_lobby is not None:
+            if len(current_lobby) > pos != -1:
+                message = "REQUEST MATCH#" + current_lobby[pos]
+                return message
+        return ""
     if check_for_pass(x, y):
         return "PASS"
     if check_for_action(x, y):
         return "ACTION"
 
-    if 319 < y < 376: #PLANETS
+    if 319 < y < 376:  # PLANETS
         position = x - 60
         remainder = position % 165
         position = int(position / 165)
@@ -22,7 +40,7 @@ def pos_from_click(x, y, mode = None):
         else:
             message = "Planet#" + str(position)
             return message
-    if 500 < y < 588: #HQ PLAYER ONE
+    if 500 < y < 588:  # HQ PLAYER ONE
         position = x
         position = position - 300
         remainder = position % 80
@@ -32,7 +50,7 @@ def pos_from_click(x, y, mode = None):
         else:
             message = "P1#HQ#" + str(position)
             return message
-    if 125 < y < 213: #HQ PLAYER TWO
+    if 125 < y < 213:  # HQ PLAYER TWO
         position = x
         position = position - 300
         remainder = position % 80
@@ -42,7 +60,7 @@ def pos_from_click(x, y, mode = None):
         else:
             message = "P2#HQ#" + str(position)
             return message
-    if 594 < y < 686: #HAND PLAYER ONE
+    if 594 < y < 686:  # HAND PLAYER ONE
         position = x
         position = position - 300
         remainder = position % 80
@@ -53,7 +71,7 @@ def pos_from_click(x, y, mode = None):
         else:
             message = "P1#Hand#" + str(position)
             return message
-    if 24 < y < 116: #HAND PLAYER TWO
+    if 24 < y < 116:  # HAND PLAYER TWO
         position = x
         position = position - 200
         remainder = position % 80
@@ -63,7 +81,7 @@ def pos_from_click(x, y, mode = None):
         else:
             message = "P2#Hand#" + str(position)
             return message
-    if y > 385: #IN PLAY PLAYER ONE
+    if y > 385:  # IN PLAY PLAYER ONE
         x_pos = x % 165
         if 60 < x_pos < 185:
             position = y
@@ -77,7 +95,7 @@ def pos_from_click(x, y, mode = None):
             message = "P1#PLAY#" + str(planet_pos) + "#" + str(position)
             return message
         return ""
-    if y < 320: #IN PLAY PLAYER ONE
+    if y < 320:  # IN PLAY PLAYER ONE
         x_pos = x % 165
         if 60 < x_pos < 185:
             position = y
