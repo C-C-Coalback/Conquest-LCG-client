@@ -252,6 +252,7 @@ def draw_box_with_name(game_screen, x, y, name):
     game_screen.blit(txt_surface, (box.x + 5, box.y + 5))
     pygame.draw.rect(game_screen, color, box, 2)
 
+
 def draw_game_request(game_screen, invitee):
     font = pygame.font.Font(None, 32)
     color = pygame.Color("green")
@@ -265,6 +266,14 @@ def draw_game_request(game_screen, invitee):
     pygame.draw.rect(game_screen, color, box, 2)
     txt_surface = font.render("Game invite received from:", True, color)
     game_screen.blit(txt_surface, (box.x + 5, box.y - 50))
+    box2 = pygame.Rect(x, y + 50, 90, 32)
+    txt_surface_acc = font.render("Accept", True, color)
+    box3 = pygame.Rect(x + 120, y + 50, 90, 32)
+    txt_surface_ref = font.render("Refuse", True, pygame.Color("red"))
+    pygame.draw.rect(game_screen, color, box2, 2)
+    pygame.draw.rect(game_screen, pygame.Color("red"), box3, 2)
+    game_screen.blit(txt_surface_acc, (box2.x + 5, box2.y + 5))
+    game_screen.blit(txt_surface_ref, (box3.x + 5, box3.y + 5))
 
 
 def draw_lobby(game_screen, string_from_server, invitee):
