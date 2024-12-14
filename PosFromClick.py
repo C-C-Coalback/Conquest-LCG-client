@@ -1,12 +1,18 @@
 from PassCommand import check_for_pass
 from ActionChecker import check_for_action
+from RefreshChecker import check_for_refresh
 
-def pos_from_click(x, y):
+
+def pos_from_click(x, y, mode = None):
     message = ""
+    if mode is not None:
+        if mode == "Lobby" and check_for_refresh(x, y):
+            return "REQUEST LOBBY"
     if check_for_pass(x, y):
         return "PASS"
     if check_for_action(x, y):
         return "ACTION"
+
     if 319 < y < 376: #PLANETS
         position = x - 60
         remainder = position % 165

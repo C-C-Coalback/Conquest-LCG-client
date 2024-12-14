@@ -56,7 +56,7 @@ def send():
                 if x.type == pygame.MOUSEBUTTONDOWN:
                     x_pos, y_pos = pygame.mouse.get_pos()
                     print(x_pos, y_pos)
-                    message = pos_from_click(x_pos, y_pos)
+                    message = pos_from_click(x_pos, y_pos, phase)
                     client_socket.send(bytes(message, "UTF-8"))
                 if x.type == pygame.KEYDOWN:
                     if x.key == pygame.K_p and phase == "Main Menu":
