@@ -50,6 +50,7 @@ def send():
                 current_lobby = draw_lobby(window, holder_string, invitee)
             if phase == "Game":
                 if not deck_loaded:
+                    client_socket.send(bytes("SWITCH TO GAME MODE", "UTF-8"))
                     message = "LOAD DECK#" + find_deck(window)
                     client_socket.send(bytes(message, "UTF-8"))
                     deck_loaded = True
