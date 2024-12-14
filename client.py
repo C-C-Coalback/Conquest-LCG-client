@@ -52,6 +52,7 @@ def send():
                 if not deck_loaded:
                     message = "LOAD DECK#" + find_deck(window)
                     client_socket.send(bytes(message, "UTF-8"))
+                    deck_loaded = True
                 c.acquire()
                 c.notify_all()
                 draw_all(window, string_from_server)
