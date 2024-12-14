@@ -36,6 +36,7 @@ def send():
     window.blit(txt_surface2, (500, 325))
     pygame.display.flip()
     phase = "Main Menu"
+    deck_loaded = False
     current_lobby = []
     try:
         while running:
@@ -52,6 +53,9 @@ def send():
                 c.notify_all()
                 draw_all(window, string_from_server)
                 c.release()
+                if not deck_loaded:
+                    message = "LOAD DECK#" + find_deck(window)
+                    client_socket.send(bytes(message, "UTF-8"))
             for x in pygame.event.get():
                 if x.type == pygame.QUIT:
                     pygame.quit()
