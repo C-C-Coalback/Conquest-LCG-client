@@ -1,5 +1,7 @@
 import pygame
 import sys
+
+
 def prompt_text(input_window, info_text):
     font = pygame.font.Font(None, 32)
     color_inactive = pygame.Color("white")

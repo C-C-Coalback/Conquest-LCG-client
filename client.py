@@ -2,7 +2,7 @@ import socket, sys
 import Replace
 from threading import *
 import pygame
-from Drawing import draw_all
+from Drawing import draw_all, draw_lobby
 from PosFromClick import pos_from_click
 from FindDeck import find_deck
 
@@ -11,6 +11,7 @@ client_socket.connect(('localhost', 8089))
 c = Condition()
 
 string_from_server = ""
+
 
 def send():
     global string_from_server
@@ -28,9 +29,17 @@ def send():
     txt_surface2 = font.render("Press d to build a deck", True, color)
     window.blit(txt_surface2, (500, 325))
     pygame.display.flip()
-    phase = "Lobby"
+    phase = "Main Menu"
     try:
         while running:
+            if phase == "Lobby":
+                _ = pygame.time.wait(20)
+                c.acquire()
+                c.notify_all()
+                holder_string = string_from_server
+                holder_string = holder_string.split(sep="#")
+                c.release()
+                draw_lobby(window, holder_string)
             if phase == "Game":
                 _ = pygame.time.wait(20)
                 c.acquire()
@@ -48,11 +57,13 @@ def send():
                     message = pos_from_click(x_pos, y_pos)
                     client_socket.send(bytes(message, "UTF-8"))
                 if x.type == pygame.KEYDOWN:
-                    if x.key == pygame.K_p and phase == "Lobby":
-                        client_socket.send(bytes("BEGIN GAME", "UTF-8"))
+                    if x.key == pygame.K_p and phase == "Main Menu":
+                        client_socket.send(bytes("REQUEST LOBBY", "UTF-8"))
+                        phase = "Lobby"
+                        """client_socket.send(bytes("BEGIN GAME", "UTF-8"))
                         message = "LOAD DECK#" + find_deck(window)
                         client_socket.send(bytes(message, "UTF-8"))
-                        phase = "Game"
+                        phase = "Game" """
 
 
     except ConnectionAbortedError:

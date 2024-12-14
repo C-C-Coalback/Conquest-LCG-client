@@ -232,6 +232,34 @@ def draw_all(game_screen, string_from_server):
         draw_in_play(game_screen, split_string[16:23], 2)
     pygame.display.flip()
 
+
+def draw_box_with_name(game_screen, x, y, name):
+    font = pygame.font.Font(None, 32)
+    color = pygame.Color("blue")
+    box = pygame.Rect(x, y, 140, 32)
+    txt_surface = font.render(name, True, color)
+    width = max(200, txt_surface.get_width() + 10)
+    box.w = width
+    game_screen.blit(txt_surface, (box.x + 5, box.y + 5))
+    pygame.draw.rect(game_screen, color, box, 2)
+
+
+def draw_lobby(game_screen, string_from_server):
+    imperial_image = pygame.image.load("ImperialAquila.jpg").convert()
+    game_screen.blit(imperial_image, (0, 0))
+    # Example string_from_server (all string): ["LOBBY", name1, name2]
+    i = 1
+    x_c = 300
+    y_c = 100
+    y_inc = 50
+    while i < len(string_from_server):
+        current_name = string_from_server[i]
+        draw_box_with_name(game_screen, x_c, y_c, current_name)
+        y_c += y_inc
+        i = i + 1
+    pygame.display.flip()
+
+
 def draw_current_deck(game_screen,  current_deck):
     for letter in current_deck:
         if letter == " ":
@@ -272,4 +300,3 @@ def draw_current_deck(game_screen,  current_deck):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 status = False
-
