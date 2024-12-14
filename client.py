@@ -13,10 +13,12 @@ client_socket.connect(('localhost', 8089))
 c = Condition()
 
 string_from_server = ""
+invitee = ""
 
 
 def send():
     global string_from_server
+    global invitee
     running = True
     pygame.init()
     bounds = (1200, 700)
@@ -35,16 +37,17 @@ def send():
     current_lobby = []
     try:
         while running:
+            _ = pygame.time.wait(20)
             if phase == "Lobby":
-                _ = pygame.time.wait(20)
                 c.acquire()
                 c.notify_all()
                 holder_string = string_from_server
                 holder_string = holder_string.split(sep="#")
                 c.release()
                 current_lobby = draw_lobby(window, holder_string)
+                if invitee != "":
+                    print("Game invite received from", invitee)
             if phase == "Game":
-                _ = pygame.time.wait(20)
                 c.acquire()
                 c.notify_all()
                 draw_all(window, string_from_server)
@@ -79,12 +82,13 @@ def send():
                         client_socket.send(bytes(message, "UTF-8"))
                         phase = "Game" """
 
-
     except ConnectionAbortedError:
         print("Connection aborted")
 
+
 def recv():
     global string_from_server
+    global invitee
     running = True
     try:
         while running:
@@ -93,11 +97,17 @@ def recv():
                 break
             c.acquire()
             string_from_server = message
+            print(string_from_server[:12])
+            if len(string_from_server) > 11:
+                if string_from_server[:12] == "GAME INVITE#" and invitee == "":
+                    print("got here")
+                    invitee = string_from_server[12:]
             c.notify_all()
             c.release()
             print("Server sent:", message)
     except ConnectionAbortedError:
         print("Connection aborted")
+
 
 user_input = input("g to connect to server, r to resize files")
 if user_input == "g":
