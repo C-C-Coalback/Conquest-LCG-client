@@ -252,8 +252,22 @@ def draw_box_with_name(game_screen, x, y, name):
     game_screen.blit(txt_surface, (box.x + 5, box.y + 5))
     pygame.draw.rect(game_screen, color, box, 2)
 
+def draw_game_request(game_screen, invitee):
+    font = pygame.font.Font(None, 32)
+    color = pygame.Color("green")
+    x = 800
+    y = 200
+    box = pygame.Rect(x, y, 140, 32)
+    txt_surface = font.render(invitee, True, color)
+    width = max(200, txt_surface.get_width() + 10)
+    box.w = width
+    game_screen.blit(txt_surface, (box.x + 5, box.y + 5))
+    pygame.draw.rect(game_screen, color, box, 2)
+    txt_surface = font.render("Game invite received from:", True, color)
+    game_screen.blit(txt_surface, (box.x + 5, box.y - 50))
 
-def draw_lobby(game_screen, string_from_server):
+
+def draw_lobby(game_screen, string_from_server, invitee):
     imperial_image = pygame.image.load("ImperialAquila.jpg").convert()
     game_screen.blit(imperial_image, (0, 0))
     # Example string_from_server (all string): ["LOBBY", name1, name2]
@@ -269,6 +283,8 @@ def draw_lobby(game_screen, string_from_server):
         y_c += y_inc
         i = i + 1
     draw_refresh_lobby(game_screen)
+    if invitee != "":
+        draw_game_request(game_screen, invitee)
     pygame.display.flip()
     return return_list
 

@@ -44,9 +44,7 @@ def send():
                 holder_string = string_from_server
                 holder_string = holder_string.split(sep="#")
                 c.release()
-                current_lobby = draw_lobby(window, holder_string)
-                if invitee != "":
-                    print("Game invite received from", invitee)
+                current_lobby = draw_lobby(window, holder_string, invitee)
             if phase == "Game":
                 c.acquire()
                 c.notify_all()
