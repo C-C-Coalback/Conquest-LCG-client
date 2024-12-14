@@ -49,13 +49,13 @@ def send():
                 c.release()
                 current_lobby = draw_lobby(window, holder_string, invitee)
             if phase == "Game":
+                if not deck_loaded:
+                    message = "LOAD DECK#" + find_deck(window)
+                    client_socket.send(bytes(message, "UTF-8"))
                 c.acquire()
                 c.notify_all()
                 draw_all(window, string_from_server)
                 c.release()
-                if not deck_loaded:
-                    message = "LOAD DECK#" + find_deck(window)
-                    client_socket.send(bytes(message, "UTF-8"))
             for x in pygame.event.get():
                 if x.type == pygame.QUIT:
                     pygame.quit()
