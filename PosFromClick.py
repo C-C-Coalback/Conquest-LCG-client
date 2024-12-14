@@ -31,7 +31,7 @@ def pos_from_click(x, y, mode, invitee, current_lobby=None):
         if invitee != "":
             a_or_r = determine_accept_game(x, y)
             if a_or_r == "a":
-                return "BEGIN GAME"
+                return "BEGIN GAME#" + invitee
             if a_or_r == "r":
                 return "REFUSE REQUEST#" + invitee
             return ""

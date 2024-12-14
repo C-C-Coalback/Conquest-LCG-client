@@ -14,11 +14,13 @@ c = Condition()
 
 string_from_server = ""
 invitee = ""
+phase = "Main Menu"
 
 
 def send():
     global string_from_server
     global invitee
+    global phase
     running = True
     pygame.init()
     bounds = (1200, 700)
@@ -87,6 +89,7 @@ def send():
 def recv():
     global string_from_server
     global invitee
+    global phase
     running = True
     try:
         while running:
@@ -102,6 +105,8 @@ def recv():
             if string_from_server == "REQUEST WAS REFUSED":
                 print("the request was refused")
                 invitee = ""
+            if string_from_server == "GAME IS STARTING":
+                phase = "Game"
             c.notify_all()
             c.release()
             print("Server sent:", message)
