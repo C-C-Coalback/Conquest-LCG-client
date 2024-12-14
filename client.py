@@ -1,4 +1,6 @@
 import socket, sys
+
+import PromptText
 import Replace
 from threading import *
 import pygame
@@ -58,7 +60,17 @@ def send():
                     client_socket.send(bytes(message, "UTF-8"))
                 if x.type == pygame.KEYDOWN:
                     if x.key == pygame.K_p and phase == "Main Menu":
+                        name = PromptText.prompt_text(window, "Enter your display name")
+                        name_to_send = "SET NAME#" + name
+                        client_socket.send(bytes(name_to_send, "UTF-8"))
+                        keep_looping = True
+                        while keep_looping:
+                            client_socket.send(bytes("REQUEST OWN USERNAME", "UTF-8"))
+                            pygame.time.wait(1000)
+                            if string_from_server == name:
+                                keep_looping = False
                         client_socket.send(bytes("REQUEST LOBBY", "UTF-8"))
+
                         phase = "Lobby"
                         """client_socket.send(bytes("BEGIN GAME", "UTF-8"))
                         message = "LOAD DECK#" + find_deck(window)
