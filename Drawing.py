@@ -233,6 +233,14 @@ def draw_all(game_screen, string_from_server):
     pygame.display.flip()
 
 
+def draw_refresh_lobby(game_screen):
+    font = pygame.font.Font(None, 32)
+    color = pygame.Color("blue")
+    box = pygame.Rect(1000, 50, 140, 32)
+    txt_surface = font.render("Refresh", True, color)
+    game_screen.blit(txt_surface, (box.x + 5, box.y + 5))
+    pygame.draw.rect(game_screen, color, box, 2)
+
 def draw_box_with_name(game_screen, x, y, name):
     font = pygame.font.Font(None, 32)
     color = pygame.Color("blue")
@@ -257,8 +265,8 @@ def draw_lobby(game_screen, string_from_server):
         draw_box_with_name(game_screen, x_c, y_c, current_name)
         y_c += y_inc
         i = i + 1
+    draw_refresh_lobby(game_screen)
     pygame.display.flip()
-
 
 def draw_current_deck(game_screen,  current_deck):
     for letter in current_deck:
