@@ -99,6 +99,9 @@ def recv():
                 if string_from_server[:12] == "GAME INVITE#" and invitee == "":
                     print("got here")
                     invitee = string_from_server[12:]
+            if string_from_server == "REQUEST WAS REFUSED":
+                print("the request was refused")
+                invitee = ""
             c.notify_all()
             c.release()
             print("Server sent:", message)
