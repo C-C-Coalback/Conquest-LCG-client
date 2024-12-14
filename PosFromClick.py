@@ -15,11 +15,26 @@ def determine_choice_pos_in_lobby(coord1, coord2):
     return -1
 
 
-def pos_from_click(x, y, mode, current_lobby=None):
+def determine_accept_game(x, y):
+    if 800 < x < 890 and 250 < y < 282:
+        return "a"
+    elif 920 < x < 1010 and 250 < y < 282:
+        return "r"
+    return ""
+
+
+def pos_from_click(x, y, mode, invitee, current_lobby=None):
     message = ""
     if mode == "Lobby":
         if check_for_refresh(x, y):
             return "REQUEST LOBBY"
+        if invitee != "":
+            a_or_r = determine_accept_game(x, y)
+            if a_or_r == "a":
+                return "START GAME"
+            if a_or_r == "r":
+                return "REFUSE"
+            return ""
         pos = determine_choice_pos_in_lobby(x, y)
         if current_lobby is not None:
             if len(current_lobby) > pos != -1:
