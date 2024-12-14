@@ -95,7 +95,6 @@ def recv():
                 break
             c.acquire()
             string_from_server = message
-            print(string_from_server[:12])
             if len(string_from_server) > 11:
                 if string_from_server[:12] == "GAME INVITE#" and invitee == "":
                     print("got here")
