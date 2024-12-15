@@ -215,6 +215,30 @@ def draw_in_play(game_screen, in_play, number=1):
                     x_current_planet = x_first_planet + 165 * i
                     y_current_planet = y_current_planet + y_increment
 
+
+def draw_discards(game_screen, dis_1, dis_2):
+    card_string = dis_1
+    if card_string != "NONE":
+        for letter in card_string:
+            if letter == " ":
+                card_string = card_string.replace(letter, "_")
+        card_image_name = "ResizedImages/" + card_string + ".jpg"
+        x = 1091
+        y = 512
+        card_image = pygame.image.load(card_image_name).convert()
+        game_screen.blit(card_image, (x, y))
+    card_string = dis_2
+    if card_string != "NONE":
+        for letter in card_string:
+            if letter == " ":
+                card_string = card_string.replace(letter, "_")
+        card_image_name = "ResizedImages/" + card_string + ".jpg"
+        x = 30
+        y = 123
+        card_image = pygame.image.load(card_image_name).convert()
+        game_screen.blit(card_image, (x, y))
+
+
 def draw_all(game_screen, string_from_server):
     imperial_image = pygame.image.load("ImperialAquila.jpg").convert()
     game_screen.blit(imperial_image, (0, 0))
@@ -230,6 +254,7 @@ def draw_all(game_screen, string_from_server):
         draw_headquarters(game_screen, split_string[7], split_string[8])
         draw_in_play(game_screen, split_string[9:16], 1)
         draw_in_play(game_screen, split_string[16:23], 2)
+        draw_discards(game_screen, split_string[23], split_string[24])
     pygame.display.flip()
 
 
