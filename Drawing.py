@@ -239,6 +239,20 @@ def draw_discards(game_screen, dis_1, dis_2):
         game_screen.blit(card_image, (x, y))
 
 
+def draw_helpful_box(game_screen, string_for_box):
+    # String for box: phase \n round_no \n player_turn \n extra_info
+    font = pygame.font.Font(None, 32)
+    color = pygame.Color("gray")
+    split_string = string_for_box.split(sep="\n")
+    y_extra = 0
+    box = pygame.Rect(1050, 375, 150, 150)
+    for i in range(len(split_string)):
+        box_text_surface = font.render(split_string[i], True, color)
+        game_screen.blit(box_text_surface, (box.x + 5, box.y + 5 + y_extra))
+        y_extra += 30
+    pygame.draw.rect(game_screen, color, box, 2)
+
+
 def draw_all(game_screen, string_from_server):
     imperial_image = pygame.image.load("ImperialAquila.jpg").convert()
     game_screen.blit(imperial_image, (0, 0))
@@ -255,6 +269,7 @@ def draw_all(game_screen, string_from_server):
         draw_in_play(game_screen, split_string[9:16], 1)
         draw_in_play(game_screen, split_string[16:23], 2)
         draw_discards(game_screen, split_string[23], split_string[24])
+        draw_helpful_box(game_screen, split_string[25])
     pygame.display.flip()
 
 
