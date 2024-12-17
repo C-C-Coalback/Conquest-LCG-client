@@ -253,7 +253,7 @@ def draw_helpful_box(game_screen, string_for_box):
     pygame.draw.rect(game_screen, color, box, 2)
 
 def draw_extra_boxes(game_screen, box_string):
-    boxes = box_string.split(box_string)
+    boxes = box_string.split(sep="|")
     print(boxes)
 
 def draw_all(game_screen, string_from_server):
