@@ -73,6 +73,8 @@ def send():
                     if x.key == pygame.K_p and phase == "Main Menu":
                         name = PromptText.prompt_text(window, "Enter your display name")
                         name_to_send = "SET NAME#" + name
+                        pygame.display.set_caption("Conquest - " + name)
+                        pygame.display.flip()
                         client_socket.send(bytes(name_to_send, "UTF-8"))
                         keep_looping = True
                         while keep_looping:
