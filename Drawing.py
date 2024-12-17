@@ -252,6 +252,9 @@ def draw_helpful_box(game_screen, string_for_box):
         y_extra += 30
     pygame.draw.rect(game_screen, color, box, 2)
 
+def draw_extra_boxes(game_screen, box_string):
+    boxes = box_string.split(box_string)
+    print(boxes)
 
 def draw_all(game_screen, string_from_server):
     imperial_image = pygame.image.load("ImperialAquila.jpg").convert()
@@ -270,6 +273,7 @@ def draw_all(game_screen, string_from_server):
         draw_in_play(game_screen, split_string[16:23], 2)
         draw_discards(game_screen, split_string[23], split_string[24])
         draw_helpful_box(game_screen, split_string[25])
+        draw_extra_boxes(game_screen, split_string[26])
     pygame.display.flip()
 
 
