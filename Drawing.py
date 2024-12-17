@@ -269,7 +269,7 @@ def draw_one_box(game_screen, box_string):
 def draw_extra_boxes(game_screen, box_string):
     boxes = box_string.split(sep="|")
     print(boxes)
-    for i in range(boxes):
+    for i in range(len(boxes)):
         draw_one_box(game_screen, boxes[i])
 
 def draw_all(game_screen, string_from_server):
