@@ -252,9 +252,25 @@ def draw_helpful_box(game_screen, string_for_box):
         y_extra += 30
     pygame.draw.rect(game_screen, color, box, 2)
 
+def draw_one_box(game_screen, box_string):
+    split_box = box_string.split(sep="/")
+    if len(split_box) == 4:
+        if split_box[0] == "Hand" and split_box[1] == "P1":
+            box_position = int(split_box[2])
+            y_pos = 594
+            x_pos = box_position * 80 + 300
+            pygame.draw.rect(game_screen, pygame.Color(split_box[3]), [x_pos, y_pos, 62, 88], 2)
+        if split_box[0] == "Hand" and split_box[1] == "P2":
+            box_position = int(split_box[2])
+            y_pos = 24
+            x_pos = box_position * 80 + 200
+            pygame.draw.rect(game_screen, pygame.Color(split_box[3]), [x_pos, y_pos, 62, 88], 2)
+
 def draw_extra_boxes(game_screen, box_string):
     boxes = box_string.split(sep="|")
     print(boxes)
+    for i in range(boxes):
+        draw_one_box(game_screen, boxes[i])
 
 def draw_all(game_screen, string_from_server):
     imperial_image = pygame.image.load("ImperialAquila.jpg").convert()
