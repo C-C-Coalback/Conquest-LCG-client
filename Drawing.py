@@ -217,7 +217,6 @@ def draw_in_play(game_screen, in_play, number=1):
                     x_current_planet = x_first_planet + 165 * i
                     y_current_planet = y_current_planet + y_increment
 
-
 def draw_discards(game_screen, dis_1, dis_2):
     card_string = dis_1
     if card_string != "NONE":
@@ -240,6 +239,34 @@ def draw_discards(game_screen, dis_1, dis_2):
         card_image = pygame.image.load(card_image_name).convert()
         game_screen.blit(card_image, (x, y))
 
+def draw_victory_displays(game_screen, dis_1, dis_2):
+    x_c = 30
+    y_c = 505
+    inc_y = 10
+    if dis_1 != "NONE":
+        bundles = dis_1.split(sep="/")
+        for i in range(len(bundles)):
+            planet_name = bundles[i]
+            for letter in planet_name:
+                if letter == " ":
+                    planet_name= planet_name.replace(letter, "_")
+            planet_image_name = "ResizedImages/" + planet_name + ".jpg"
+            planet_image = pygame.image.load(planet_image_name).convert()
+            game_screen.blit(planet_image, (x_c, y_c))
+            y_c += inc_y
+    x_c = 1057
+    y_c = 125
+    if dis_2 != "NONE":
+        bundles = dis_2.split(sep="/")
+        for i in range(len(bundles)):
+            planet_name = bundles[i]
+            for letter in planet_name:
+                if letter == " ":
+                    planet_name= planet_name.replace(letter, "_")
+            planet_image_name = "ResizedImages/" + planet_name + ".jpg"
+            planet_image = pygame.image.load(planet_image_name).convert()
+            game_screen.blit(planet_image, (x_c, y_c))
+            y_c += inc_y
 
 def draw_helpful_box(game_screen, string_for_box):
     # String for box: phase \n round_no \n player_turn \n extra_info
@@ -291,6 +318,7 @@ def draw_all(game_screen, string_from_server):
         draw_discards(game_screen, split_string[23], split_string[24])
         draw_helpful_box(game_screen, split_string[25])
         draw_extra_boxes(game_screen, split_string[26])
+        draw_victory_displays(game_screen, split_string[27], split_string[28])
     pygame.display.flip()
 
 
